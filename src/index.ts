@@ -11,6 +11,8 @@ function loadHandler(script: HTMLScriptElement, resolve: Callback<null>, reject:
   };
 }
 
+export function loadScript(src: string): Promise<null>;
+export function loadScript(src: string, cb: Callback<Error | null>): void;
 export function loadScript(src: string, cb?: Callback<Error | null>) {
   const script = document.createElement('script');
   script.type = 'text/javascript';
