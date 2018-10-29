@@ -1,19 +1,4 @@
 type Callback<T> = (value: T) => void;
-type StoredCallbacks = { resolve: Callback<null>; reject: Callback<Error> };
-
-const callbackMap: { [src: string]: StoredCallbacks[] } = {};
-
-function addCallbacksFor(src: string, callbacks: StoredCallbacks) {
-  callbackMap[src] = (callbackMap[src] || []).concat(callbacks);
-}
-
-function runCallbacksFor(src: string, success: boolean) {
-  let i = callbackMap[src].length;
-  while (i--) {
-    const cb = callbackMap[src].pop()!;
-    success ? cb.resolve(null) : cb.reject(new Error(`Failed to load script at ${src}`));
-  }
-}
 
 function loadHandler(
   script: HTMLScriptElement,
@@ -21,15 +6,13 @@ function loadHandler(
   resolve: Callback<null>,
   reject: Callback<Error>
 ) {
-  addCallbacksFor(src, { resolve, reject });
-
   script.onload = () => {
     script.onerror = script.onload = null as any;
-    runCallbacksFor(src, true);
+    resolve(null);
   };
   script.onerror = () => {
     script.onerror = script.onload = null as any;
-    runCallbacksFor(src, false);
+    reject(new Error(`Failed to load script at ${src}`));
   };
 }
 
@@ -47,6 +30,7 @@ export function loadScript(src: string, cb?: Callback<Error | null>) {
   // Handle callback, if available
   if (typeof cb == 'function') {
     loadHandler(script, src, cb, cb);
+    return;
   }
 
   // If Promise is available, return Promise
