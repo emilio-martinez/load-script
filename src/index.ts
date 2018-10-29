@@ -1,31 +1,34 @@
-const hasDocument = typeof document === 'object' && !!document;
+type Callback<T> = (value: T) => void;
 
-export function loadScript(src: string, callback?: (err: Error | null) => void) {
-  const cb = typeof callback == 'function' ? callback : null;
-
-  if (!hasDocument && cb) cb(new Error(`No Document available.`));
-
+export function loadScript(src: string, cb?: Callback<Error | null>) {
   const script = document.createElement('script');
   script.type = 'text/javascript';
   script.async = true;
-  script.src = src;
+  script.src = `${src}`;
 
-  if (cb) {
+  const handler = (resolve: Callback<null>, reject: Callback<Error>) => {
     script.onload = () => {
       script.onerror = script.onload = null as any;
-      cb(null);
+      resolve(null);
     };
     script.onerror = () => {
       script.onerror = script.onload = null as any;
-      cb(new Error(`Failed to load script at ${src}`));
+      reject(new Error(`Failed to load script at ${src}`));
     };
-  }
+  };
 
   setTimeout(() => {
     const firstScript = document.scripts[0];
     firstScript.parentNode!.insertBefore(script, firstScript);
   }, 0);
 
-  // Return script element in case any further manipulations are needed
-  return script;
+  // Handle callback, if available
+  if (typeof cb == 'function') {
+    return handler(cb, cb);
+  }
+
+  // If Promise is available, return Promise
+  if (typeof Promise == 'function') {
+    return new Promise<null>((resolve, reject) => handler(resolve, reject));
+  }
 }
