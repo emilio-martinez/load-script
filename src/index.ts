@@ -1,18 +1,13 @@
 type Callback<T> = (value: T) => void;
 
-function loadHandler(
-  script: HTMLScriptElement,
-  src: string,
-  resolve: Callback<null>,
-  reject: Callback<Error>
-) {
+function loadHandler(script: HTMLScriptElement, resolve: Callback<null>, reject: Callback<Error>) {
   script.onload = () => {
     script.onerror = script.onload = null as any;
     resolve(null);
   };
   script.onerror = () => {
     script.onerror = script.onload = null as any;
-    reject(new Error(`Failed to load script at ${src}`));
+    reject(new Error(`Failed to load script at ${script.src}`));
   };
 }
 
@@ -29,12 +24,12 @@ export function loadScript(src: string, cb?: Callback<Error | null>) {
 
   // Handle callback, if available
   if (typeof cb == 'function') {
-    loadHandler(script, src, cb, cb);
+    loadHandler(script, cb, cb);
     return;
   }
 
   // If Promise is available, return Promise
   if (typeof Promise == 'function') {
-    return new Promise<null>((resolve, reject) => loadHandler(script, src, resolve, reject));
+    return new Promise<null>((resolve, reject) => loadHandler(script, resolve, reject));
   }
 }
