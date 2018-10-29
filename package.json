@@ -2,9 +2,11 @@
   "name": "@emc/load-script",
   "version": "0.0.0",
   "description": "Loads a JavaScript file asynchronously.",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.esm5.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node_modules/.bin/tsc && node_modules/.bin/rollup -c rollup.config.js"
   },
   "repository": {
     "type": "git",
@@ -21,5 +23,12 @@
   "bugs": {
     "url": "https://github.com/emilio-martinez/load-script/issues"
   },
-  "homepage": "https://github.com/emilio-martinez/load-script#readme"
+  "homepage": "https://github.com/emilio-martinez/load-script#readme",
+  "devDependencies": {
+    "camelcase": "5.0.0",
+    "prettier": "1.14.3",
+    "rollup": "0.66.6",
+    "rollup-plugin-prettier": "0.4.0",
+    "typescript": "3.1.3"
+  }
 }
