@@ -1,0 +1,25 @@
+{
+  "name": "@emc/load-script",
+  "version": "0.0.0",
+  "description": "Loads a JavaScript file asynchronously.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emilio-martinez/load-script.git"
+  },
+  "keywords": [
+    "script",
+    "async",
+    "javascript",
+    "browser"
+  ],
+  "author": "Emilio Martinez-Cordero <e.marticor@gmail.com>",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/emilio-martinez/load-script/issues"
+  },
+  "homepage": "https://github.com/emilio-martinez/load-script#readme"
+}
