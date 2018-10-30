@@ -15,7 +15,19 @@ module.exports = function(config) {
     },
     reporters: ['progress', 'karma-typescript'],
     karmaTypescriptConfig: {
-      tsconfig: './tsconfig-spec.json'
+      tsconfig: './tsconfig-spec.json',
+      reports: {
+        html: {
+          directory: 'coverage',
+          subdirectory: '.'
+        },
+        lcovonly: {
+          directory: 'coverage',
+          subdirectory: '.',
+          filename: 'lcov.info'
+        },
+        'text-summary': ''
+      }
     },
     customLaunchers: {
       ChromeHeadlessWithoutSandbox: {
@@ -24,12 +36,6 @@ module.exports = function(config) {
       }
     },
     browsers: ['ChromeHeadlessWithoutSandbox'],
-    singleRun: true,
-    coverageOptions: {
-      reports: {
-        html: 'coverage',
-        'text-summary': null
-      }
-    }
+    singleRun: true
   });
 };
