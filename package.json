@@ -7,6 +7,7 @@
   "scripts": {
     "pretest": "rm -rf coverage",
     "test": "node_modules/.bin/karma start",
+    "format": "node_modules/.bin/prettier \"**/*.+(js|ts|yml|json|md)\" --write",
     "build": "node_modules/.bin/tsc && node_modules/.bin/rollup -c rollup.config.js"
   },
   "repository": {
