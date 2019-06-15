@@ -20,7 +20,7 @@ export default [
     ],
     plugins: [
       prettier({
-        parser: 'babylon',
+        parser: 'babel',
         printWidth: 100,
         singleQuote: true
       })
